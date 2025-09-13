@@ -59,6 +59,7 @@ enum EKF_STATE
   LO = 3
 };
 
+// imu以及相机数据结构体
 struct MeasureGroup
 {
   double vio_time;
@@ -72,6 +73,7 @@ struct MeasureGroup
   };
 };
 
+// lidar数据以及相关时间戳
 struct LidarMeasureGroup
 {
   double lidar_frame_beg_time;
