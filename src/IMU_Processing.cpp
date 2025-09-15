@@ -303,15 +303,12 @@ void ImuProcess::UndistortPcl(LidarMeasureGroup &lidar_meas, StatesGroup &state_
   double offs_t;
   // double imu_time;
   double tau;
-  if (!imu_time_init)
-  {
+  if (!imu_time_init){
     // imu_time = v_imu.front()->header.stamp.toSec() - first_lidar_time;
     // tau = 1.0 / (0.25 * sin(2 * CV_PI * 0.5 * imu_time) + 0.75);
     tau = 1.0;
     imu_time_init = true;
-  }
-  else
-  {
+  }else{
     tau = state_inout.inv_expo_time;
     // ROS_ERROR("tau: %.6f !!!!!!", tau);
   }
@@ -344,7 +341,7 @@ void ImuProcess::UndistortPcl(LidarMeasureGroup &lidar_meas, StatesGroup &state_
       // cout<<"acc_avr: "<<acc_avr.transpose()<<endl;
 
       // #ifdef DEBUG_PRINT
-      fout_imu << setw(10) << head->header.stamp.toSec() - first_lidar_time << " " << angvel_avr.transpose() << " " << acc_avr.transpose() << endl;
+    //   fout_imu << setw(10) << head->header.stamp.toSec() - first_lidar_time << " " << angvel_avr.transpose() << " " << acc_avr.transpose() << endl;
       // #endif
 
       // imu_time = head->header.stamp.toSec() - first_lidar_time;
@@ -355,7 +352,7 @@ void ImuProcess::UndistortPcl(LidarMeasureGroup &lidar_meas, StatesGroup &state_
       if (head->header.stamp.toSec() < prop_beg_time)
       {
         // printf("00 \n");
-        dt = tail->header.stamp.toSec() - last_prop_end_time;
+        dt = tail->header.stamp.toSec() - last_prop_end_time;   //last_prop_end_time该变量未被初始化，可能会产生未定义行为
         offs_t = tail->header.stamp.toSec() - prop_beg_time;
       }
       else if (i != v_imu.size() - 2)
@@ -545,7 +542,7 @@ void ImuProcess::Process2(LidarMeasureGroup &lidar_meas, StatesGroup &stat, Poin
   double t1, t2, t3;
   t1 = omp_get_wtime();
   ROS_ASSERT(lidar_meas.lidar != nullptr);
-  if (!imu_en)
+  if (!imu_en) // 如果IMU未启用，则默认匀速运动模型
   {
     Forward_without_imu(lidar_meas, stat, *cur_pcl_un_);
     return;

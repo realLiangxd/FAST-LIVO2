@@ -529,7 +529,7 @@ void LIVMapper::savePCD()
 
 void LIVMapper::run() 
 {
-  ros::Rate rate(5000);
+  ros::Rate rate(5000);//频率5000Hz
   while (ros::ok()) 
   {
     ros::spinOnce();
@@ -538,7 +538,7 @@ void LIVMapper::run()
       rate.sleep();
       continue;
     }
-    handleFirstFrame();
+    handleFirstFrame(); // 处理第一帧点云
 
     processImu();
 
